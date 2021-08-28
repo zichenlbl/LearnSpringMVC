@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 注入属性 -->
+    <bean id="user" class="com.zichen.entity.User">
+        <property name="name" value="zhangsan"/>
+        <property name="age" value="21"/>
+    </bean>
+    <bean id="userDao4" class="com.zichen.dao.impl.UserDaoImpl">
+        <property name="userMap">
+            <map>
+                <entry key="user01" value-ref="user"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>

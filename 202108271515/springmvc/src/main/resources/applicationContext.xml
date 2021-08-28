@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 默认单例、无参构造方法创建对象 初始化方法 销毁方法-->
+    <bean id="userDao" class="com.zichen.dao.impl.UserDaoImpl" init-method="init" destroy-method="destory"/>
+
+    <!-- UserService 中注入 UserDao -->
+    <bean id="userService" class="com.zichen.service.impl.UserServiceImpl" >
+        <!-- name UserService 中的 setXxx 方法， ref 注入的 UserDao 的引用 id -->
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <!-- 命名空间注入 -ref:对象引用 注入类 没有-ref: 注入属性-->
+    <bean id="userService1" class="com.zichen.service.impl.UserServiceImpl" p:userDao-ref="userDao"/>
+    <!-- 构造方法注入 UserDao -->
+    <bean id="userService2" class="com.zichen.service.impl.UserServiceImpl" >
+        <!-- 使用构造方法注入 -->
+        <constructor-arg name="userDao" ref="userDao"/>
+    </bean>
+
+    <!-- Bean 多例(多个对象) 多例对象的销毁根据垃圾回收-->
+    <bean id="userDao1" class="com.zichen.dao.impl.UserDaoImpl" scope="prototype"/>
+
+    <!-- 工厂模式静态方法创建对象 -->
+    <bean id="userDao2" class="com.zichen.factory.StaticFactory" factory-method="getUserDao"/>
+
+    <!-- 工厂模式实例方法创建对象 -->
+    <bean id="factory" class="com.zichen.factory.DynamicFactory"/>
+    <bean id="userDao3" factory-bean="factory" factory-method="getUserDao"/>
+
+    <!-- 引入其他配置文件 -->
+    <import resource="applicationContext-2.xml"/>
+
+</beans>
